@@ -28,7 +28,8 @@ router.get('/multiple', async (req, res) => {
 // Route pour ajouter un défi (authentifiée)
 router.post('/', verifyToken, async (req, res) => {
   // Code pour ajouter un défi
-  if (req.userId !== 'ADMINISTRATEUR') {
+  console.log(req.username);
+  if (req.username !== 'ADMINISTRATEUR') {
     return res.status(403).json({
       message: 'Seuls les administrateurs peuvent ajouter des défis.',
     });

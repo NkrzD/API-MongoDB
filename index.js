@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const verifyToken = require('./middleware/auth');
 const mongoose = require('mongoose');
 const defisRouter = require('./routes/defis');
+const userRouter = require('./routes/createUser');
 
 const app = express();
 const port = 3000;
@@ -11,7 +12,7 @@ app.use(bodyParser.json());
 
 // Connexion à la base de données MongoDB avec Mongoose
 const uri =
-  'mongodb+srv://Adrien:1234@apimongodb.h3eaxwl.mongodb.net/?retryWrites=true&w=majority&appName=APIMongoDB';
+  'mongodb+srv://Adrien:1234@apimongodb.h3eaxwl.mongodb.net/API?retryWrites=true&w=majority&appName=APIMongoDB';
 mongoose
   .connect(uri)
   .then(() => {
@@ -22,12 +23,14 @@ mongoose
   });
 
 // Middleware pour vérifier le token JWT
-app.use(verifyToken);
+//app.use(verifyToken);
 
 // Routes
-app.use('/defis', defisRouter);
+app.use('/defis', verifyToken, defisRouter);
+app.use('/createUser', userRouter);
 
 // Démarrage du serveur
 app.listen(port, () => {
   console.log(`Serveur démarré sur le port ${port}`);
 });
+
